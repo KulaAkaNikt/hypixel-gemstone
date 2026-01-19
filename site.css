@@ -50,6 +50,19 @@ h1 {
     margin-bottom: 30px;
 }
 
+.gem-ruby { color: #ff5555; }
+.gem-amethyst { color: #aa00aa; }
+.gem-jade { color: #55ff55; }
+.gem-amber { color: #ffaa00; }
+.gem-topaz { color: #ffff55; }
+.gem-sapphire { color: #5555ff; }
+.gem-jasper { color: #ff55ff; }
+.gem-opal { color: #ffffff; }
+.gem-aquamarine { color: #55ffff; }
+.gem-onyx { color: #555555; }
+.gem-citrine { color: #d4af37; }
+.gem-peridot { color: #aadd00; }
+
 .container {
     width: 95%;
     max-width: 900px;
@@ -156,4 +169,5 @@ tr:hover {
         font-size: 14px;
     }
 }
+
 
