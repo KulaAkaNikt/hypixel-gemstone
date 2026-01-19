@@ -1,4 +1,4 @@
-/* Definicja kolorów - u³atwia póŸniejsze zmiany */
+/* Definicja kolorÃ³w - uÂ³atwia pÃ³Å¸niejsze zmiany */
 :root {
     --bg-main: #121212;
     --bg-card: #1e1e1e;
@@ -20,10 +20,17 @@ body {
     padding: 20px;
     margin: 0;
 }
-/* Kolor dla wersji Fine - jasny b³êkit */
+/* Kolor dla wersji Fine - jasny bÂ³Ãªkit */
 .text-fine {
     color: #55cdff;
 }
+
+.gem-aquamarine { color: #00ffff; }
+.gem-onyx { color: #555555; }
+.gem-citrine { color: #ffaa00; }
+.gem-peridot { color: #55ff55; }
+.gem-ruby { color: #ff5555; }
+.gem-jasper { color: #ff55ff; }
 
 /* Kolor dla wersji Flawless - fioletowy (jak w grze) */
 .text-flawless {
@@ -31,10 +38,10 @@ body {
     font-weight: bold;
 }
 
-/* Styl dla komórek z cenami, aby by³y bardziej czytelne */
+/* Styl dla komÃ³rek z cenami, aby byÂ³y bardziej czytelne */
 td:nth-child(2), td:nth-child(3) {
     font-family: 'Courier New', Courier, monospace;
-    color: #00ff00; /* Zielony kolor "pieniêdzy" */
+    color: #00ff00; /* Zielony kolor "pieniÃªdzy" */
 }
 
 h1 {
@@ -138,7 +145,7 @@ tr:hover {
     font-size: 0.9em;
 }
 
-/* Responsywnoœæ dla telefonów */
+/* ResponsywnoÅ“Ã¦ dla telefonÃ³w */
 @media (max-width: 600px) {
     .controls {
         flex-direction: column;
@@ -149,3 +156,4 @@ tr:hover {
         font-size: 14px;
     }
 }
+
