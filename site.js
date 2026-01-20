@@ -61,7 +61,7 @@ async function fetchBazaarData() {
             });
             const farmItems = [
                 { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
-                { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_FLOWER_HELIANTHUS", label: "Helianthus" }
+                { base: "HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
             ];
 
             farmItems.forEach(item => {
@@ -97,3 +97,4 @@ async function fetchBazaarData() {
     }
 }
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
+
