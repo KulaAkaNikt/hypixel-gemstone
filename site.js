@@ -24,7 +24,6 @@ async function fetchBazaarData() {
                 });
             };
 
-           
             const getPriceFromSummary = (product, summaryType) => {
                 if (summaryType === 'sell') { 
                     return product.sell_summary && product.sell_summary.length > 0 
@@ -64,7 +63,6 @@ async function fetchBazaarData() {
                 }
             });
 
-        
             const farmItems = [
                 { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
                 { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
@@ -75,10 +73,10 @@ async function fetchBazaarData() {
                 const condProd = products[item.condensed];
 
                 if (baseProd && condProd) {
-               
+                    
                     const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
                     
-               
+                   
                     const priceCondensed = getPriceFromSummary(condProd, 'buy');
                     
                     const cost9x = priceBaseUnit * 9; 
@@ -98,7 +96,7 @@ async function fetchBazaarData() {
 
             const time = new Date().toLocaleTimeString('pl-PL');
             status.innerHTML = `Zaktualizowano: ${time}<br>
-                               <small>Podatek: 1.1% s</small>`;
+                               <small>Podatek: 1.1%</small>`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
@@ -106,4 +104,3 @@ async function fetchBazaarData() {
 }
 
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
-
