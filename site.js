@@ -24,13 +24,13 @@ async function fetchBazaarData() {
                 });
             };
 
-            // Uniwersalna funkcja pobierania ceny z arkuszy (zgodnie z obrazkiem 6c4262)
+            // Uniwersalna funkcja pobierania ceny z arkuszy
             const getPriceFromSummary = (product, summaryType) => {
-                if (summaryType === 'sell') { // Dla przedmiotów bazowych (nasz koszt)
+                if (summaryType === 'sell') { // Koszt zakupu bazy (Instant Buy)
                     return product.sell_summary && product.sell_summary.length > 0 
                         ? product.sell_summary[0].pricePerUnit 
                         : product.quick_status.sellPrice;
-                } else { // Dla przedmiotów skraftowanych (nasz przychód)
+                } else { // Przychód ze sprzedaży (Instant Sell)
                     return product.buy_summary && product.buy_summary.length > 0 
                         ? product.buy_summary[0].pricePerUnit 
                         : product.quick_status.buyPrice;
@@ -47,8 +47,8 @@ async function fetchBazaarData() {
                 const flawless = products[`FLAWLESS_${type}_GEM`];
 
                 if (fine && flawless) {
-                    const priceFine = getPriceFromSummary(fine, 'sell'); // Jak Fine
-                    const priceFlawless = getPriceFromSummary(flawless, 'buy'); // Jak Flawless
+                    const priceFine = getPriceFromSummary(fine, 'sell');
+                    const priceFlawless = getPriceFromSummary(flawless, 'buy');
                     
                     const cost80 = priceFine * 80;
                     const netProfit = (priceFlawless * (1 - taxRate)) - cost80;
@@ -65,7 +65,7 @@ async function fetchBazaarData() {
                 }
             });
 
-            // --- SEKCJA 2: ROLNICTWO (Fermento/Helianthus) ---
+            // --- SEKCJA 2: ROLNICTWO (Logika x9 - Fermento i Helianthus) ---
             const farmItems = [
                 { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
                 { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
@@ -76,14 +76,14 @@ async function fetchBazaarData() {
                 const condProd = products[item.condensed];
 
                 if (baseProd && condProd) {
-                    // TWOJA PROŚBA: Cena bazy pobierana jak "Fine" (sell_summary)
+                    // Cena bazy (np. Flowering Helianthus) z sell_summary
                     const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
                     
-                    // TWOJA PROŚBA: Cena skondensowanego pobierana jak "Flawless" (buy_summary)
+                    // Cena skondensowanego (np. Condensed Helianthus) z buy_summary
                     const priceCondensed = getPriceFromSummary(condProd, 'buy');
                     
-                    const cost9x = priceBaseUnit * 9; // Koszt 9 sztuk bazy
-                    const netProfit = (priceCondensed * (1 - taxRate)) - cost9x; // Zysk po podatku
+                    const cost9x = priceBaseUnit * 9; 
+                    const netProfit = (priceCondensed * (1 - taxRate)) - cost9x;
 
                     tbody.innerHTML += `<tr>
                         <td><strong>${item.label}</strong></td>
@@ -99,7 +99,7 @@ async function fetchBazaarData() {
 
             const time = new Date().toLocaleTimeString('pl-PL');
             status.innerHTML = `Zaktualizowano: ${time}<br>
-                               <small>Podatek: 1.1% | Fermento: x9 (sell_summary) | Condensed: buy_summary</small>`;
+                               <small>Podatek: 1.1% | Logika x9 dla Fermento/Helianthus</small>`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
