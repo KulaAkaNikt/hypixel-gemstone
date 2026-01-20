@@ -2,7 +2,7 @@ async function fetchBazaarData() {
     const status = document.getElementById('status');
     const tbody = document.getElementById('gemBody');
     
-    if (status) status.innerHTML = "Aktualizacja (Poprawka Helianthus)...";
+    if (status) status.innerHTML = "Aktualizacja...";
     
     const apiUrl = "https://api.hypixel.net/v2/skyblock/bazaar";
     const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`;
@@ -97,4 +97,5 @@ async function fetchBazaarData() {
     }
 }
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
+
 
