@@ -24,22 +24,21 @@ async function fetchBazaarData() {
                 });
             };
 
-            // Uniwersalna funkcja pobierania ceny z arkuszy
+           
             const getPriceFromSummary = (product, summaryType) => {
-                if (summaryType === 'sell') { // Koszt zakupu bazy (Instant Buy)
+                if (summaryType === 'sell') { 
                     return product.sell_summary && product.sell_summary.length > 0 
                         ? product.sell_summary[0].pricePerUnit 
                         : product.quick_status.sellPrice;
-                } else { // Przychód ze sprzedaży (Instant Sell)
+                } else { 
                     return product.buy_summary && product.buy_summary.length > 0 
                         ? product.buy_summary[0].pricePerUnit 
                         : product.quick_status.buyPrice;
                 }
             };
 
-            const taxRate = 0.011; // Podatek 1.1%
+            const taxRate = 0.011; 
 
-            // --- SEKCJA 1: GEMSTONE (80x Fine -> Flawless) ---
             const gemTypes = ["RUBY", "AMETHYST", "JADE", "AMBER", "TOPAZ", "SAPPHIRE", "JASPER", "OPAL", "AQUAMARINE", "ONYX", "CITRINE", "PERIDOT"];
             
             gemTypes.forEach(type => {
@@ -65,7 +64,7 @@ async function fetchBazaarData() {
                 }
             });
 
-            // --- SEKCJA 2: ROLNICTWO (Logika x9 - Fermento i Helianthus) ---
+        
             const farmItems = [
                 { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
                 { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
@@ -76,10 +75,10 @@ async function fetchBazaarData() {
                 const condProd = products[item.condensed];
 
                 if (baseProd && condProd) {
-                    // Cena bazy (np. Flowering Helianthus) z sell_summary
+               
                     const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
                     
-                    // Cena skondensowanego (np. Condensed Helianthus) z buy_summary
+               
                     const priceCondensed = getPriceFromSummary(condProd, 'buy');
                     
                     const cost9x = priceBaseUnit * 9; 
@@ -99,7 +98,7 @@ async function fetchBazaarData() {
 
             const time = new Date().toLocaleTimeString('pl-PL');
             status.innerHTML = `Zaktualizowano: ${time}<br>
-                               <small>Podatek: 1.1% | Logika x9 dla Fermento/Helianthus</small>`;
+                               <small>Podatek: 1.1% s</small>`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
@@ -107,3 +106,4 @@ async function fetchBazaarData() {
 }
 
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
+
