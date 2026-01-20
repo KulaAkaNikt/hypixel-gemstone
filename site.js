@@ -2,7 +2,7 @@ async function fetchBazaarData() {
     const status = document.getElementById('status');
     const tbody = document.getElementById('gemBody');
     
-    if (status) status.innerHTML = "Aktualizacja (Logika: Baza x9 vs Condensed)...";
+    if (status) status.innerHTML = "Aktualizacja (Poprawka Helianthus)...";
     
     const apiUrl = "https://api.hypixel.net/v2/skyblock/bazaar";
     const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`;
@@ -25,29 +25,26 @@ async function fetchBazaarData() {
             };
 
             const getPriceFromSummary = (product, summaryType) => {
-                if (summaryType === 'sell') { 
+                if (summaryType === 'sell') {
                     return product.sell_summary && product.sell_summary.length > 0 
                         ? product.sell_summary[0].pricePerUnit 
                         : product.quick_status.sellPrice;
-                } else { 
+                } else {
                     return product.buy_summary && product.buy_summary.length > 0 
                         ? product.buy_summary[0].pricePerUnit 
                         : product.quick_status.buyPrice;
                 }
             };
 
-            const taxRate = 0.011; 
+            const taxRate = 0.011;
 
             const gemTypes = ["RUBY", "AMETHYST", "JADE", "AMBER", "TOPAZ", "SAPPHIRE", "JASPER", "OPAL", "AQUAMARINE", "ONYX", "CITRINE", "PERIDOT"];
-            
             gemTypes.forEach(type => {
                 const fine = products[`FINE_${type}_GEM`];
                 const flawless = products[`FLAWLESS_${type}_GEM`];
-
                 if (fine && flawless) {
                     const priceFine = getPriceFromSummary(fine, 'sell');
                     const priceFlawless = getPriceFromSummary(flawless, 'buy');
-                    
                     const cost80 = priceFine * 80;
                     const netProfit = (priceFlawless * (1 - taxRate)) - cost80;
 
@@ -62,10 +59,9 @@ async function fetchBazaarData() {
                     </tr>`;
                 }
             });
-
             const farmItems = [
                 { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
-                { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
+                { base: "FLOWERING_HELIANTHUS", condensed: "CONDENSED_FLOWER_HELIANTHUS", label: "Helianthus" }
             ];
 
             farmItems.forEach(item => {
@@ -73,10 +69,7 @@ async function fetchBazaarData() {
                 const condProd = products[item.condensed];
 
                 if (baseProd && condProd) {
-                    
                     const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
-                    
-                   
                     const priceCondensed = getPriceFromSummary(condProd, 'buy');
                     
                     const cost9x = priceBaseUnit * 9; 
@@ -91,16 +84,16 @@ async function fetchBazaarData() {
                             ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
                         </td>
                     </tr>`;
+                } else {
+                    console.warn(`Nie znaleziono produktu: ${item.base} lub ${item.condensed}`);
                 }
             });
 
             const time = new Date().toLocaleTimeString('pl-PL');
-            status.innerHTML = `Zaktualizowano: ${time}<br>
-                               <small>Podatek: 1.1%</small>`;
+            status.innerHTML = `Zaktualizowano: ${time}`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
     }
 }
-
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
