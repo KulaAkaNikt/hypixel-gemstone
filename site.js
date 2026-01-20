@@ -2,7 +2,7 @@ async function fetchBazaarData() {
     const status = document.getElementById('status');
     const tbody = document.getElementById('gemBody');
     
-    if (status) status.innerHTML = "Pobieranie danych z arkuszy (sell_summary)...";
+    if (status) status.innerHTML = "Aktualizacja danych (Podatek: 1.1%)...";
     
     const apiUrl = "https://api.hypixel.net/v2/skyblock/bazaar";
     const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`;
@@ -29,18 +29,15 @@ async function fetchBazaarData() {
                     const fineProduct = products[fineKey];
                     const flawlessProduct = products[flawlessKey];
 
-                    // --- LOGIKA Z TWOJEJ LINII API (image_6c4262.png) ---
-                    // Pobieramy cenę Fine z sell_summary (pierwszy element tablicy)
+                    // 1. Pobieranie ceny FINE z sell_summary[0] (zgodnie z obrazkiem 6c4262)
                     let finePrice = 0;
                     if (fineProduct.sell_summary && fineProduct.sell_summary.length > 0) {
-                        // Bierzemy dokładnie pricePerUnit z pierwszej oferty sprzedaży
                         finePrice = fineProduct.sell_summary[0].pricePerUnit;
                     } else {
-                        // Jeśli arkusz jest pusty, używamy awaryjnie quick_status
                         finePrice = fineProduct.quick_status.sellPrice;
                     }
 
-                    // --- LOGIKA DLA FLAWLESS (buy_summary - najwyższy buy order) ---
+                    // 2. Pobieranie ceny FLAWLESS z buy_summary[0]
                     let flawlessPrice = 0;
                     if (flawlessProduct.buy_summary && flawlessProduct.buy_summary.length > 0) {
                         flawlessPrice = flawlessProduct.buy_summary[0].pricePerUnit;
@@ -48,10 +45,10 @@ async function fetchBazaarData() {
                         flawlessPrice = flawlessProduct.quick_status.buyPrice;
                     }
                     
-                    // OBLICZENIA Z PODATKIEM 1%
+                    // 3. OBLICZENIA Z UWZGLĘDNIENIEM PODATKU 1.1%
                     const cost80xFine = finePrice * 80;
-                    const tax = 0.01;
-                    const revenueAfterTax = flawlessPrice * (1 - tax);
+                    const taxRate = 0.011; // Zmieniono na 1.1%
+                    const revenueAfterTax = flawlessPrice * (1 - taxRate);
                     const netProfit = revenueAfterTax - cost80xFine;
 
                     const format = num => Math.round(num).toLocaleString('pl-PL');
@@ -71,8 +68,8 @@ async function fetchBazaarData() {
             });
 
             const time = new Date().toLocaleTimeString('pl-PL');
-            status.innerHTML = `Zaktualizowano: ${time}<br>
-                               <small>Metoda: Fine (sell_summary[0]) | Flawless (buy_summary[0])</small>`;
+            status.innerHTML = `Ostatnia aktualizacja: ${time}<br>
+                               <small>Metoda: Arkusz Zleceń | Podatek: 1.1%</small>`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
