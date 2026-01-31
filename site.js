@@ -3,9 +3,9 @@ async function fetchBazaarData() {
     const tbody = document.getElementById('gemBody');
     
     if (status) status.innerHTML = "Aktualizacja...";
-    
+
     const apiUrl = "https://api.hypixel.net/v2/skyblock/bazaar";
-    const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`;
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`; // działający proxy
 
     try {
         const response = await fetch(proxyUrl);
@@ -17,12 +17,13 @@ async function fetchBazaarData() {
             tbody.innerHTML = ""; 
             const products = data.products;
 
-            const format = num => {
-                return num.toLocaleString('pl-PL', {
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1
-                });
-            };
+            // debug - sprawdź co przyszło z API
+            console.log(products);
+
+            const format = num => num.toLocaleString('pl-PL', {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            });
 
             const getPriceFromSummary = (product, summaryType) => {
                 if (summaryType === 'sell') {
@@ -32,110 +33,3 @@ async function fetchBazaarData() {
                 } else {
                     return product.buy_summary && product.buy_summary.length > 0 
                         ? product.buy_summary[0].pricePerUnit 
-                        : product.quick_status.buyPrice;
-                }
-            };
-
-            const taxRate = 0.011;
-
-            const gemTypes = ["RUBY", "AMETHYST", "JADE", "AMBER", "TOPAZ", "SAPPHIRE", "JASPER", "OPAL", "AQUAMARINE", "ONYX", "CITRINE", "PERIDOT"];
-            gemTypes.forEach(type => {
-                const fine = products[`FINE_${type}_GEM`];
-                const flawless = products[`FLAWLESS_${type}_GEM`];
-                if (fine && flawless) {
-                    const priceFine = getPriceFromSummary(fine, 'sell');
-                    const priceFlawless = getPriceFromSummary(flawless, 'buy');
-                    const cost80 = priceFine * 80;
-                    const netProfit = (priceFlawless * (1 - taxRate)) - cost80;
-
-                  tbody.innerHTML += `<tr>
-    <td class="gem-cell gem-${type.toLowerCase()}">
-        <img
-            src="icons/${type.toLowerCase()}.png"
-            alt="${type}"
-            class="gem-icon"
-        >
-        <strong>${type}</strong>
-    </td>
-                        <td style="color: #55cdff;">${format(priceFine)}</td>
-                        <td style="color: #aa00aa;">${format(priceFlawless)}</td>
-                        <td style="color: #ffac1c;">${format(cost80)}</td>
-                        <td style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-weight: bold;">
-                            ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
-                        </td>
-                    </tr>`;
-                }
-            });
-          const farmItems = [
-    { base: "FERMENTO", condensed: "CONDENSED_FERMENTO", label: "Fermento" },
-    { base: "HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
-];
-
-farmItems.forEach(item => {
-    const baseProd = products[item.base];
-    const condProd = products[item.condensed];
-
-    if (!baseProd || !condProd) {
-        console.warn(`Nie znaleziono produktu: ${item.base} lub ${item.condensed}`);
-        return; // pomijamy jeśli brak danych
-    }
-
-    const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
-    const priceCondensed = getPriceFromSummary(condProd, 'buy');
-    const cost9x = priceBaseUnit * 9;
-    const netProfit = (priceCondensed * (1 - taxRate)) - cost9x;
-
-    // deklarujemy klasę i ikonę dla nazwy
-    let nameClass = item.label.toLowerCase() === "fermento" ? "gem-name-fermento" : "gem-name-helianthus";
-    let iconSrc = item.label.toLowerCase() === "fermento" ? "icons/fermento.png" : "icons/helianthus.png";
-
-    tbody.innerHTML += `
-        <tr>
-            <td class="${nameClass}">
-                <img src="${iconSrc}" alt="${item.label}" class="small-icon">
-                <strong>${item.label}</strong>
-            </td>
-            <td>${format(cost9x)} (x9)</td>
-            <td>${format(priceCondensed)}</td>
-            <td style="color: #888;">---</td>
-            <td style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-weight: bold;">
-                ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
-            </td>
-        </tr>
-    `;
-});
-
-
-        tbody.innerHTML += `<tr>
-            <td class="${nameClass}">
-                <img src="${iconSrc}" alt="${item.label}" class="small-icon">
-                <strong>${item.label}</strong>
-            </td>
-            <td>${format(cost9x)} (x9)</td>
-            <td>${format(priceCondensed)}</td>
-            <td style="color: #888;">---</td>
-            <td style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-weight: bold;">
-                ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
-            </td>
-        </tr>`;
-    } else {
-        console.warn(`Nie znaleziono produktu: ${item.base} lub ${item.condensed}`);
-    }
-});
-                }
-            });
-
-            const time = new Date().toLocaleTimeString('pl-PL');
-            status.innerHTML = `Zaktualizowano: ${time}`;
-        }
-    } catch (error) {
-        if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
-    }
-}
-document.addEventListener('DOMContentLoaded', fetchBazaarData);
-
-
-
-
-
-
