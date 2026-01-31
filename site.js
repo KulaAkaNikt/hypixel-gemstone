@@ -71,35 +71,26 @@ async function fetchBazaarData() {
                 { base: "HELIANTHUS", condensed: "CONDENSED_HELIANTHUS", label: "Helianthus" }
             ];
 
-farmItems.forEach(item => {
-    const baseProd = products[item.base];
-    const condProd = products[item.condensed];
+            farmItems.forEach(item => {
+                const baseProd = products[item.base];
+                const condProd = products[item.condensed];
 
-    if (baseProd && condProd) {
-        const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
-        const priceCondensed = getPriceFromSummary(condProd, 'buy');
-        
-        const cost9x = priceBaseUnit * 9; 
-        const netProfit = (priceCondensed * (1 - taxRate)) - cost9x;
+                if (baseProd && condProd) {
+                    const priceBaseUnit = getPriceFromSummary(baseProd, 'sell');
+                    const priceCondensed = getPriceFromSummary(condProd, 'buy');
+                    
+                    const cost9x = priceBaseUnit * 9; 
+                    const netProfit = (priceCondensed * (1 - taxRate)) - cost9x;
 
-        tbody.innerHTML += `<tr>
-            <td class="gem-cell gem-${item.base.toLowerCase()}">
-                <img
-                    src="icons/${item.base.toLowerCase()}.png"
-                    alt="${item.label}"
-                    class="gem-icon"
-                >
-                <strong>${item.label}</strong>
-            </td>
-            <td style="color: #55cdff;">${format(cost9x)}</td>
-            <td style="color: #aa00aa;">${format(priceCondensed)}</td>
-            <td style="color: #888;">9x → 1x</td>
-            <td style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-weight: bold;">
-                ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
-            </td>
-        </tr>`;
-    }
-});
+                    tbody.innerHTML += `<tr>
+                        <td><strong>${item.label}</strong></td>
+                        <td style="color: #55cdff;">${format(cost9x)} (x9)</td>
+                        <td style="color: #aa00aa;">${format(priceCondensed)}</td>
+                        <td style="color: #888;">---</td>
+                        <td style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-weight: bold;">
+                            ${netProfit >= 0 ? "+" : ""}${format(netProfit)}
+                        </td>
+                    </tr>`;
                 } else {
                     console.warn(`Nie znaleziono produktu: ${item.base} lub ${item.condensed}`);
                 }
@@ -113,7 +104,6 @@ farmItems.forEach(item => {
     }
 }
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
-
 
 
 
