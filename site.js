@@ -48,8 +48,15 @@ async function fetchBazaarData() {
                     const cost80 = priceFine * 80;
                     const netProfit = (priceFlawless * (1 - taxRate)) - cost80;
 
-                    tbody.innerHTML += `<tr>
-                        <td class="gem-${type.toLowerCase()}"><strong>${type}</strong></td>
+                  tbody.innerHTML += `<tr>
+    <td class="gem-cell gem-${type.toLowerCase()}">
+        <img
+            src="icons/${type.toLowerCase()}.png"
+            alt="${type}"
+            class="gem-icon"
+        >
+        <strong>${type}</strong>
+    </td>
                         <td style="color: #55cdff;">${format(priceFine)}</td>
                         <td style="color: #aa00aa;">${format(priceFlawless)}</td>
                         <td style="color: #ffac1c;">${format(cost80)}</td>
@@ -97,5 +104,6 @@ async function fetchBazaarData() {
     }
 }
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
+
 
 
