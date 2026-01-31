@@ -188,8 +188,23 @@ tr:hover {
     th, td {
         padding: 10px;
         font-size: 14px;
+.gem-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gem-icon {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
+}
+    
+    
+    
     }
 }
+
 
 
 
