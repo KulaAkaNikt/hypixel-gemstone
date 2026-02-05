@@ -2,14 +2,14 @@ async function fetchBazaarData() {
     const status = document.getElementById('status');
     const tbody = document.getElementById('gemBody');
     
-    if (status) status.innerHTML = "Aktualizacja...";
+    if (status) status.innerHTML = "Update...";
     
     const apiUrl = "https://api.hypixel.net/v2/skyblock/bazaar";
     const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`;
 
     try {
         const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error(`Błąd API: ${response.status}`);
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
         const data = await response.json();
 
@@ -92,18 +92,19 @@ async function fetchBazaarData() {
                         </td>
                     </tr>`;
                 } else {
-                    console.warn(`Nie znaleziono produktu: ${item.base} lub ${item.condensed}`);
+                    console.warn(`Product not found: ${item.base} lub ${item.condensed}`);
                 }
             });
 
             const time = new Date().toLocaleTimeString('pl-PL');
-            status.innerHTML = `Zaktualizowano: ${time}`;
+            status.innerHTML = `Updated: ${time}`;
         }
     } catch (error) {
         if (status) status.innerHTML = `<span style="color: red;">Błąd: ${error.message}</span>`;
     }
 }
 document.addEventListener('DOMContentLoaded', fetchBazaarData);
+
 
 
 
